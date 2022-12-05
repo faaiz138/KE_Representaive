@@ -1,0 +1,73 @@
+.sidebar {
+    height: 100%;
+    width: 264px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color:#ffffff;
+    overflow-x: hidden;
+    padding-top: 17px;
+    border-style: solid;
+    border-width: 6px;
+    border-color: #f39200;
+    border-radius: 5px;
+  }
+  
+  .sidebar a {
+    padding-top: 50%;
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color:#f39200;
+    display: block;
+    padding-top: 16px;
+    padding-left: 22%;
+    padding-bottom: 29%;
+    padding-right: 0%;
+    justify-content: center;
+  }
+  
+  .sidebar a:hover {
+    color: #f39200;
+  }
+  
+  .main {
+    margin-left: 160px; /* Same as the width of the sidenav */
+    padding: 0px 10px;
+  }
+  
+  @media screen and (max-height: 450px) {
+    .sidebar {padding-top: 15px;}
+    .sidebar a {font-size: 18px;}
+  }
+  /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+div.content {
+    margin-left: 200px;
+    padding: 1px 16px;
+    height: 1000px;
+  }
+  
+  /* On screens that are less than 700px wide, make the sidebar into a topbar */
+  @media screen and (max-width: 700px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+    .sidebar a {float: left;}
+    div.content {margin-left: 0;}
+  }
+  
+  /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
+  @media screen and (max-width: 400px) {
+    .sidebar a {
+      text-align: center;
+      float: none;
+    }
+  }
+  a{
+    border-bottom: 3px solid #e7dccd;
+    border-radius: 1px;
+    padding-bottom: 2px;
+  }

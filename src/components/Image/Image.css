@@ -1,0 +1,27 @@
+.img img{
+    float: right;
+    position: relative;
+}
+.img figcaption1{
+    position: absolute;
+    bottom: -95px;
+    left: -200px;
+    width: 100%;
+    font-size: 40px;
+    text-align: center;
+    color:#fdfdfd;
+    font-family: 'Domine', serif;
+    font-weight: bold;
+    word-wrap: break-word;
+}
+.img figcaption2{
+    position: absolute;
+    bottom: -350px;
+    left: 440px;
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+    color:#605f5f;
+    font-family: 'Domine', serif;
+    
+}
