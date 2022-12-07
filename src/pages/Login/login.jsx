@@ -48,7 +48,10 @@ function Login(){
             //navigate("/home");
             .then(function(res){
                 console.log(res)
-                navigate("/dashboard");
+                if(res.status===200)
+                {
+                navigate("/dashboard/home");
+                }
             })
           } catch (error) {
             console.log(error);
