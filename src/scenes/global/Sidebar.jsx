@@ -8,6 +8,7 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ChatIcon from '@mui/icons-material/Chat';
 import PaymentIcon from '@mui/icons-material/Payment';
+import Logout from "@mui/icons-material/Logout";
 import { Link } from "react-router-dom";
 
 export default function Sidebar() {
@@ -57,7 +58,13 @@ export default function Sidebar() {
                 <ChatIcon  className="sidebarIcon" />
                 Supervisor Chat
               </li>
-            </Link> 
+            </Link>
+            <Link to="/" className="link">
+              <li className="sidebarListItem">
+                <Logout  className="sidebarIcon" />
+                Log Out
+              </li>
+            </Link>  
           </ul>
         </div>
       </div>
