@@ -29,15 +29,15 @@ function MainDashboard() {
           <main className="content">
             <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/team" element={<Team />} />
-              <Route path="/bill" element={<BillGeneration />} />
+              <Route path="home" element={<Dashboard />} />
+              <Route path="team" element={<Team />} />
+              <Route path="bill" element={<BillGeneration />} />
               <Route path="/invoices" element={<Invoices />} />
-              <Route path="/register" element={<Form />} />
+              <Route path="register" element={<Form />} />
               <Route path="/bar" element={<Bar />} />
-              <Route path="/complaint" element={<FAQ />} />
+              <Route path="complaint" element={<FAQ />} />
               <Route path="/calendar" element={<Calendar />} />
-              <Route path="/chat" element={<Chat/>} />
+              <Route path="chat" element={<Chat/>} />
             </Routes>
           </main>
         </div>

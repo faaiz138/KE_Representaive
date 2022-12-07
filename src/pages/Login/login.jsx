@@ -113,6 +113,7 @@ function Login(){
         return errors;
     }
     return(
+        <div className="Login">
         <div className="container">
             <img src={logo} alt="Logo" height="200vh" />
             <form onSubmit={handleSubmit}>
@@ -137,6 +138,7 @@ function Login(){
                     <button onClick={login} className="fluild ui button blue">Login</button>
                 </div>
             </form>
+        </div>
         </div>
     )
 }

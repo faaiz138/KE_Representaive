@@ -1,4 +1,4 @@
-.sidebar {
+.sidebarDash {
     flex: 1;
     height: calc(100vh - 50px);
     background-color: rgb(255, 255, 255);

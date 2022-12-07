@@ -11,10 +11,10 @@ function Sidebar(){
           "https://www.ke.com.pk/assets/themes/KE/images/logo.png"
           alt="K-Electric Logo"/></a>
         </div>
-      <a href="/home"><i class="fa fa-fw fa-home"></i> Home</a>
+      <a href="/"><i class="fa fa-fw fa-home"></i> Home</a>
       <a href="/login"><i class="fa fa-fw fa-user"></i>Login</a>
-      <a href="/contact"><i class="fa fa-fw fa-envelope"></i> Contact</a>
-      <a href="/career"><i class="fa fa-fw fa fa-briefcase"></i> Careers</a>
+      <a href="/"><i class="fa fa-fw fa-envelope"></i> Contact</a>
+      <a href="/"><i class="fa fa-fw fa fa-briefcase"></i> Careers</a>
 </div>
     </div>
 

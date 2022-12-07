@@ -12,12 +12,12 @@ import { Link } from "react-router-dom";
 
 export default function Sidebar() {
   return (
-    <div className="sidebar">
+    <div className="sidebarDash">
       <div className="sidebarWrapper">
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Dashboard</h3>
           <ul className="sidebarList">
-            <Link to="/dashboard" className="link">
+            <Link to="/dashboard/home" className="link">
             <li className="sidebarListItem active">
               <HomeOutlinedIcon className="sidebarIcon" />
               Home
@@ -26,33 +26,33 @@ export default function Sidebar() {
           </ul>
         </div>
         <div className="sidebarMenu">
-          <h3 className="sidebarTitle">Quick Menu</h3>
+          <h3 className="sidebarTitle">Tools</h3>
           <ul className="sidebarList">
-            <Link to="/team" className="link">
+            <Link to="/dashboard/team" className="link">
               <li className="sidebarListItem">
                 <PeopleOutlinedIcon className="sidebarIcon" />
                 Supervisor Team
               </li>
             </Link>
-            <Link to="/bill" className="link">
+            <Link to="/dashboard/bill" className="link">
               <li className="sidebarListItem">
                 <ReceiptOutlinedIcon className="sidebarIcon" />
                 Bill Generation
               </li>
             </Link>
-            <Link to="/register" className="link">
+            <Link to="/dashboard/register" className="link">
               <li className="sidebarListItem">
                 <PersonOutlinedIcon className="sidebarIcon" />
                 Add Supervisor
               </li>
             </Link>
-            <Link to="/complaint" className="link">
+            <Link to="/dashboard/complaint" className="link">
               <li className="sidebarListItem">
                 <HelpOutlineOutlinedIcon className="sidebarIcon" />
                 Complaints Management
               </li>
             </Link>
-            <Link to="/chat" className="link">
+            <Link to="/dashboard/chat" className="link">
               <li className="sidebarListItem">
                 <ChatIcon  className="sidebarIcon" />
                 Supervisor Chat
