@@ -6,22 +6,43 @@ import { mockDataTeam } from "../../data/mockData";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
+import { DeleteOutline } from "@mui/icons-material";
 import Header from "../../components/Header";
-const columns = [
-  { field: 'complain_no', headerName: 'Complain #', width: 80},
-  { field: 'complain_type', headerName: 'Type', width: 150 },
-  { field: 'complain_status', headerName: 'Status', width: 100 },
-  { field: 'affected_area', headerName: 'Area Affected', width: 200 },
-  { field: 'consumer_id', headerName: 'Consumer ID', width: 100 },
-  { field: 'account_no', headerName: 'Account Number', width: 100 },
-  { field: 'details', headerName: 'Complain Details', width: 400 }
-]
 const FAQ = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [tableData, setTableData] = useState([])
   const [rows, setRows] = useState(tableData);
   const [deletedRows, setDeletedRows] = useState([]);
+
+  const columns = [
+    { field: 'complain_no', headerName: 'Complain #', width: 80},
+    { field: 'complain_type', headerName: 'Type', width: 150 },
+    { field: 'complain_status', headerName: 'Status', width: 100 },
+    { field: 'affected_area', headerName: 'Area Affected', width: 200 },
+    { field: 'consumer_id', headerName: 'Consumer ID', width: 100 },
+    { field: 'account_no', headerName: 'Account Number', width: 100 },
+    { field: 'details', headerName: 'Complain Details', width: 300 },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <>
+            <DeleteOutline
+              className="userListDelete"
+              onClick={() => handleDelete(params.row.id)}
+            />
+          </>
+        );
+      },
+    }
+  ]
+  const handleDelete = (id) => {
+    setTableData(tableData.filter((item) => item.id !== id));
+    console.log(id)
+  };
   useEffect(() => {
     fetch("http://localhost:3080/employee_complain/getpendingcomplains",{   method: "GET", 
     'credentials': 'include',
