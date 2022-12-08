@@ -4,6 +4,8 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import InputAdornment from '@mui/material/InputAdornment';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import axios from "axios";
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -114,7 +116,7 @@ const Form = () => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="text"
+                type="password"
                 label="Password"
                 onBlur={handleBlur}
                 onChange={handleChange}
