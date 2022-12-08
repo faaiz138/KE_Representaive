@@ -7,20 +7,49 @@ import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettin
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
-const columns = [
-  { field: 'supervisor_id', headerName: 'ID' },
-  { field: 'email', headerName: 'Email', width: 200 },
-  { field: 'first_name', headerName: 'First Name', width: 200 },
-  { field: 'last_name', headerName: 'Last Name', width: 200 },
-  { field: 'contact_no', headerName: 'Contact', width: 200 },
-  { field: 'cnic', headerName: 'CNIC', width: 200 }
-]
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import {
+  GridRowModes,
+  DataGridPro,
+  GridToolbarContainer,
+  GridActionsCellItem,
+} from '@mui/x-data-grid-pro';
 const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [tableData, setTableData] = useState([])
   const [rows, setRows] = useState(tableData);
   const [deletedRows, setDeletedRows] = useState([]);
+  const handleDeleteClick = (id) => () => {
+    setTableData(tableData.filter((row) => row.id !== id));
+  };
+  const columns = [
+    { field: 'supervisor_id', headerName: 'ID' },
+    { field: 'email', headerName: 'Email', width: 200 },
+    { field: 'first_name', headerName: 'First Name', width: 200 },
+    { field: 'last_name', headerName: 'Last Name', width: 200 },
+    { field: 'contact_no', headerName: 'Contact', width: 200 },
+    { field: 'cnic', headerName: 'CNIC', width: 200 },
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 100,
+      cellClassName: 'actions',
+      getActions: ({ row }) => {
+
+        return [
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteClick(row)}
+            color="inherit"
+          />,
+        ];
+      },
+    },
+  ]
+
   useEffect(() => {
     fetch("http://localhost:3080/Supervisor/getsupervisor",{   method: "GET", 
     'credentials': 'include',

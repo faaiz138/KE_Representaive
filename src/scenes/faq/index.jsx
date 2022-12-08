@@ -6,8 +6,16 @@ import { mockDataTeam } from "../../data/mockData";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
-import { DeleteOutline } from "@mui/icons-material";
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import Header from "../../components/Header";
+import {
+  GridRowModes,
+  DataGridPro,
+  GridToolbarContainer,
+  GridActionsCellItem,
+} from '@mui/x-data-grid-pro';
+import axios from "axios";
+import {Navigate, useNavigate} from 'react-router-dom';
 const FAQ = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -16,33 +24,53 @@ const FAQ = () => {
   const [deletedRows, setDeletedRows] = useState([]);
 
   const columns = [
-    { field: 'complain_no', headerName: 'Complain #', width: 80},
+    { field: 'complain_no', headerName: 'Complain #', width: 65},
     { field: 'complain_type', headerName: 'Type', width: 150 },
     { field: 'complain_status', headerName: 'Status', width: 100 },
-    { field: 'affected_area', headerName: 'Area Affected', width: 200 },
+    { field: 'affected_area', headerName: 'Area Affected', width: 150 },
     { field: 'consumer_id', headerName: 'Consumer ID', width: 100 },
     { field: 'account_no', headerName: 'Account Number', width: 100 },
-    { field: 'details', headerName: 'Complain Details', width: 300 },
+    { field: 'details', headerName: 'Complain Details', width: 400 },
     {
-      field: "action",
-      headerName: "Action",
-      width: 150,
-      renderCell: (params) => {
-        return (
-          <>
-            <DeleteOutline
-              className="userListDelete"
-              onClick={() => handleDelete(params.row.id)}
-            />
-          </>
-        );
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 100,
+      cellClassName: 'actions',
+      getActions: ({ row }) => {
+
+        return [
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteClick(row)}
+            color="inherit"
+          />,
+        ];
       },
-    }
+    },
   ]
-  const handleDelete = (id) => {
-    setTableData(tableData.filter((item) => item.id !== id));
-    console.log(id)
+  const handleDeleteClick = (id) => () => {
+    setTableData(tableData.filter((row) => row.id !== id));
+    delete_acc(id.account_no,id.consumer_id)
   };
+  async function delete_acc(account_no,consumer_id)
+  {
+    const response = await axios.delete('http://localhost:3080/employee_complain/deleteComplain',
+    {
+      data: {
+        account_no : account_no,
+        consumer_id : consumer_id
+      },
+      withCredentials:true,
+    }
+    );
+    if(response.status===200)
+    {
+      console.log(response);
+    }
+    
+  }
   useEffect(() => {
     fetch("http://localhost:3080/employee_complain/getpendingcomplains",{   method: "GET", 
     'credentials': 'include',
@@ -64,7 +92,7 @@ const FAQ = () => {
     <Box m="20px">
       <Header title="Complaint List" subtitle="Managing Complaints" />
       <Box
-        m="40px 0 0 0"
+        m="42px 0 0 0"
         height="75vh"
         sx={{
           "& .MuiDataGrid-root": {
