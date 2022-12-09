@@ -52,24 +52,29 @@ const FAQ = () => {
   ]
   const handleDeleteClick = (id) => () => {
     setTableData(tableData.filter((row) => row.id !== id));
-    delete_acc(id.account_no,id.consumer_id)
+    delete_acc(id.account_no,id.consumer_id,id.complain_no,id)
   };
-  async function delete_acc(account_no,consumer_id)
+  async function delete_acc(account_no,consumer_id,complain_no,id)
   {
     const response = await axios.delete('http://localhost:3080/employee_complain/deleteComplain',
     {
       data: {
         account_no : account_no,
-        consumer_id : consumer_id
+        consumer_id : consumer_id,
+        complain_no:complain_no
+
       },
       withCredentials:true,
     }
     );
     if(response.status===200)
     {
+      const newData = [...tableData];
+      const prevIndex = tableData.findIndex((item) => item.key === id);
+      newData.splice(prevIndex, 1);
+      setTableData(newData);
       console.log(response);
-    }
-    
+    }   
   }
   useEffect(() => {
     fetch("http://localhost:3080/employee_complain/getpendingcomplains",{   method: "GET", 
