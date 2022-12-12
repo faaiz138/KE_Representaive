@@ -1,73 +1,162 @@
-import "../../scenes/global/sidebar.css";
+import { NavLink } from "react-router-dom";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import Cookies from 'js-cookie'
 import ChatIcon from '@mui/icons-material/Chat';
-import PaymentIcon from '@mui/icons-material/Payment';
 import Logout from "@mui/icons-material/Logout";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import SidebarMenu from "./SidebarMenu";
+import './sidebar.css'
+const routes = [
+  {
+    path: "/dashboard/home",
+    name: "Dashboard",
+    icon: <HomeOutlinedIcon />,
+  },
+  {
+    path: "/dashboard/team",
+    name: "Team",
+    icon: <PeopleOutlinedIcon/>,
+  },
+  {
+    path: "/dashboard/bill",
+    name: "Bill Generation",
+    icon: <ReceiptOutlinedIcon />,
+  },
+  {
+    path: "/dashboard/register",
+    name: "Add Supervisor",
+    icon: <HowToRegIcon  />,
+  },
+  {
+    path: "/dashboard/complaint",
+    name: "Complaint Management",
+    icon: <HelpOutlineOutlinedIcon/>,
+  },
+  {
+    path: "/dashboard/chat",
+    name: "Supervisor Chat",
+    icon: <ChatIcon/>,
+  },
+  {
+    path: "/",
+    name: "Logout",
+    icon: <Logout />,
+  }
+];
 
-export default function Sidebar() {
+const Sidebar = ({ children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
+  
+  const showAnimation = {
+    hidden: {
+      width: 0,
+      opacity: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+    show: {
+      opacity: 1,
+      width: "auto",
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
+  function handleClick(e){
+    if(e==='Logout')
+    {
+      console.log(true)
+      localStorage.removeItem("auth");
+      Cookies.remove('auth')
+    }
+    console.log(localStorage.getItem('auth'))
+  }
   return (
-    <div className="sidebarDash">
-      <div className="sidebarWrapper">
-        <div className="sidebarMenu">
-          <h3 className="sidebarTitle">Dashboard</h3>
-          <ul className="sidebarList">
-            <Link to="/dashboard/home" className="link">
-            <li className="sidebarListItem active">
-              <HomeOutlinedIcon className="sidebarIcon" />
-              Home
-            </li>
-            </Link>
-          </ul>
-        </div>
-        <div className="sidebarMenu">
-          <h3 className="sidebarTitle">Tools</h3>
-          <ul className="sidebarList">
-            <Link to="/dashboard/team" className="link">
-              <li className="sidebarListItem">
-                <PeopleOutlinedIcon className="sidebarIcon" />
-                Supervisor Team
-              </li>
-            </Link>
-            <Link to="/dashboard/bill" className="link">
-              <li className="sidebarListItem">
-                <ReceiptOutlinedIcon className="sidebarIcon" />
-                Bill Generation
-              </li>
-            </Link>
-            <Link to="/dashboard/register" className="link">
-              <li className="sidebarListItem">
-                <PersonOutlinedIcon className="sidebarIcon" />
-                Add Supervisor
-              </li>
-            </Link>
-            <Link to="/dashboard/complaint" className="link">
-              <li className="sidebarListItem">
-                <HelpOutlineOutlinedIcon className="sidebarIcon" />
-                Complaints Management
-              </li>
-            </Link>
-            <Link to="/dashboard/chat" className="link">
-              <li className="sidebarListItem">
-                <ChatIcon  className="sidebarIcon" />
-                Supervisor Chat
-              </li>
-            </Link>
-            <Link to="/" className="link">
-              <li className="sidebarListItem">
-                <Logout  className="sidebarIcon" />
-                Log Out
-              </li>
-            </Link>  
-          </ul>
-        </div>
+    <>
+      <div className="main-container">
+        <motion.div
+          animate={{
+            width: isOpen ? "250px" : "75px",
+
+            transition: {
+              duration: 0.5,
+              type: "spring",
+              damping: 10,
+            },
+          }}
+          className={`sidebar `}
+        >
+          <div className="top_section">
+            <AnimatePresence>
+              {isOpen && (
+                <motion.h1
+                  variants={showAnimation}
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  className="logo"
+                >
+                  K Electric Representative
+                </motion.h1>
+              )}
+            </AnimatePresence>
+          </div>
+          <section className="routes">
+          <div className="bars">
+              <ArrowBackIosIcon onClick={toggle} />
+            </div>
+            {routes.map((route, index) => {
+              if (route.subRoutes) {
+                return (
+                  <SidebarMenu
+                    setIsOpen={setIsOpen}
+                    route={route}
+                    showAnimation={showAnimation}
+                    isOpen={isOpen}
+                  />
+                );
+              }
+
+              return (
+                <NavLink
+                  to={route.path}
+                  key={index}
+                  className="link"
+                  activeClassName="active"
+                  onClick={() => handleClick(route.name)}
+                >
+                  <div className="icon">{route.icon}</div>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        variants={showAnimation}
+                        initial="hidden"
+                        animate="show"
+                        exit="hidden"
+                        className="link_text"
+                      >
+                        {route.name}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </NavLink>
+              );
+            })}
+          </section>
+        </motion.div>
+
+        <main>{children}</main>
       </div>
-    </div>
+    </>
   );
-}
+};
+
+export default Sidebar;

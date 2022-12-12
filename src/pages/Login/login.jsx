@@ -9,10 +9,14 @@ function Login(){
     const [formValues,setFormValues] = useState(initialValues)
     const [formErrors,setFormErrors] = useState({})
     const [iscaptcha,setIsCaptcha] = useState(false)
+    const [res,setRes]= useState(false)
     const [isSubmit,setIsSubmit] = useState(false);
     const [email,setEmail] = useState();
     const [password,setPassword] = useState()
     const navigate = useNavigate();
+    function handleCaptcha(){
+        setIsCaptcha(true)
+    }
     const handleChange = (e) => {
     
         const {name,value} = e.target;
@@ -27,10 +31,8 @@ function Login(){
     }
     const handleSubmit = async (e) =>{
         e.preventDefault();
-        setFormErrors(validate(formValues)); 
-        setIsCaptcha(true);
-        setIsSubmit(true);
-
+        var errors = validate(formValues,res,iscaptcha)
+          
         try {
             const res = await axios.post("http://localhost:3080/employee/login", {
               email:email,
@@ -47,16 +49,24 @@ function Login(){
             //localStorage.setItem("user", JSON.stringify(res.data.user));
             //navigate("/home");
             .then(function(res){
-                console.log(res)
                 if(res.status===200)
                 {
-                navigate("/dashboard/home");
+                    setRes(true);
                 }
+                if(res.status===200 && iscaptcha===true)
+                {
+                    localStorage.setItem("auth", JSON.stringify(res.data));
+                    navigate("/dashboard/home");
+                }
+                console.log(res.data)
             })
           } catch (error) {
             console.log(error);
             const errorMsg = error.response.data.error;
           }
+          errors = validate(formValues,res,iscaptcha)
+          setFormErrors(errors); 
+          setIsSubmit(true);
     }
     useEffect(() => {
         if (Object.keys(formErrors).length === 0 && isSubmit) {
@@ -70,9 +80,7 @@ function Login(){
     })
     async function login()
     {
-        let item = {email,password};
-        console.log(email)
-        console.log(password)
+        let item = {email,password}
         /*let result = await fetch("http://localhost:3080/employee/login",{   
             mode: 'no-cors',
             method:'POST',
@@ -90,8 +98,9 @@ function Login(){
         //localStorage.setItem("user-info",JSON.stringify(result))
         //navigate("/dashboard")
     }
-    const validate = (values) => {
+    const validate = (values,res,capt) => {
         const errors = {};
+        console.log(res)
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
         if (!values.email)
         {
@@ -113,6 +122,14 @@ function Login(){
         {
             errors.password = "Password cannot exceed more than 10 characters";
         }
+        if(res===false)
+        {
+            errors.password = "Incorrent username or Password";
+        }
+        if(capt===false)
+        {
+            errors.captcha = 'Incorrect Recaptcha.'
+        }
         return errors;
     }
     return(
@@ -129,16 +146,17 @@ function Login(){
                         <input type="email" name="email" placeholder="Email" value = {formValues.email} onChange={handleChange}/>
                     </div>
                     <div className="field">
-                    <p>{formErrors.password}</p>
                         <label>Password </label>
                         <input type="password" name="password" placeholder="Password" value={formValues.password} onChange={handleChange}/>
                     </div>
+                    <p>{formErrors.password}</p>
                     <div className="captcha">
                     <ReCAPTCHA
                     sitekey="6LeEHGoiAAAAABNDVxwQ-o6kX2n_mm1YhD5fFYPP"
-                    onChange={handleChange}/>
+                    onChange={handleCaptcha}/>
                     </div>
-                    <button onClick={login} className="fluild ui button blue">Login</button>
+                    <p>{formErrors.captcha}</p>
+                    <button onClick={login} className="fluild ui button yellow">Login</button>
                 </div>
             </form>
         </div>

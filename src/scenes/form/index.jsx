@@ -1,13 +1,13 @@
-import { Box, Button, TextField } from "@mui/material";
-import { useState,useEffect } from "react"
+import { Box, Button, TextField,AlertTitle } from "@mui/material";
+import { useState} from "react"
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
-import InputAdornment from '@mui/material/InputAdornment';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import Alert from '@mui/material/Alert';
 import axios from "axios";
 const Form = () => {
+  const [submit,setSubmit] = useState(false)
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = async (values) => {
     let fname = values.firstname
@@ -35,17 +35,16 @@ const Form = () => {
         },
         withCredentials:true,
     })
-      //localStorage.setItem("user", JSON.stringify(res.data.user));
+      
       .then(function(res){
-          console.log(res)
-          //navigate("/dashboard");
+        if(res.status===200)
+        {
+          setSubmit(true);
+        }
       })
     } catch (error) {
       console.log(error);
-      const errorMsg = error.response.data.error;
     }
-
-    
   };
 
   return (
@@ -146,23 +145,31 @@ const Form = () => {
                 label="Cnic"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.address1}
+                value={values.cnic}
                 name="cnic"
-                error={!!touched.address1 && !!errors.address1}
-                helperText={touched.address1 && errors.address1}
+                error={!!touched.cnic && !!errors.cnic}
+                helperText={touched.cnic && errors.cnic}
                 sx={{ gridColumn: "span 4" }}
               />
               
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" color="secondary" variant="contained">
+              <Button type="submit" color="success" variant="contained">
                 Create New User
               </Button>
             </Box>
+            <Box display="flex" justifyContent="center" mt="30px">
+            { submit &&  <Alert severity="success">
+            <AlertTitle>Success</AlertTitle>
+            <strong>User Account Created!</strong>
+            </Alert>}
+            </Box>
           </form>
-        )}
+        )
+        }
       </Formik>
     </Box>
+    
   );
 };
 
@@ -172,13 +179,16 @@ const phoneRegExp =
 const checkoutSchema = yup.object().shape({
   firstname: yup.string().required("required"),
   lastname: yup.string().required("required"),
+  password: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
-  lastname: yup.string().required("required"),
   contact: yup
     .string()
     .matches(phoneRegExp, "Phone number is not valid")
-    .required("required"),
-  cnic: yup.string().required("required"),
+    .required("required")
+    .min(11, 'Must be exactly 11 digits')
+    .max(11, 'Must be exactly 11 digits'),
+  cnic: yup.string().required("required").min(13, 'Must be exactly 13 digits')
+  .max(13, 'Must be exactly 13 digits'),
 });
 const initialValues = {
   firstname: "",

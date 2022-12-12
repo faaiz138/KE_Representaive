@@ -1,49 +1,101 @@
-.sidebarDash {
-    flex: 1;
-    height: calc(100vh - 50px);
-    background-color: rgb(255, 255, 255);
-    position:static;
-    top: 50px;
-    margin-right: 30px;
-  }
-  
-  .sidebarWrapper {
-    padding: 30px;
-    color: #555;
-    margin-top: 10px;
-    margin-left: 15px;
-  }
-  
-  .sidebarMenu {
-    margin-bottom: 10px;
-  }
-  
-  .sidebarTitle {
-    font-size: 35px;
-    color: rgb(187, 186, 186);
-  }
-  
-  .sidebarList {
-    list-style: none;
-    padding: 5px;
-  }
-  
-  .sidebarListItem {
-    padding: 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    border-radius: 10px;
-  }
-  
-  .sidebarListItem.active,
-  .sidebarListItem:hover {
-    background-color: rgb(240, 240, 255);
-  }
-  
-  .sidebarIcon{
-      margin-right: 5px;
-      font-size: 30px !important;
-      color: gray;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  }
+.main-container {
+  display: flex;
+}
+main {
+  padding: 10px;
+}
+
+.title {
+  font-size: 3rem;
+  display: grid;
+  place-items: center;
+}
+
+/* Sidebar */
+.sidebar {
+  background: rgb(0, 7, 61);
+  color: rgb(255, 255, 255);
+  height: 110%;
+  overflow-y: auto;
+}
+.icon{
+  padding-left: 15px;
+  height: 50px;
+  margin-bottom: 15px;
+}
+.top_section {
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 15px;
+}
+.logo {
+  font-size: 19px;
+  line-height: 0;
+  color: #fff;
+}
+.bars {
+  display: inline;
+  width: 100px;
+  padding-left: 26px;
+  padding-bottom: 25px;
+}
+.hide {
+  display: none;
+}
+
+.routes {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: space-between;
+}
+.link {
+  display: flex;
+  color: white;
+  gap: 10px;
+  padding: 5px 10px;
+  border-right: 4px solid transparent;
+  transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+.link:hover {
+  border-right: 4px solid white;
+  background: rgb(45, 51, 89);
+  transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+.active {
+  border-right: 4px solid white;
+  background: rgb(18, 26, 71);
+}
+.link_text {
+  white-space: nowrap;
+  font-size: 15px;
+}
+
+.menu {
+  display: flex;
+  color: white;
+
+  padding: 5px 10px;
+  border-right: 4px solid transparent;
+  transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  justify-content: space-between;
+}
+.menu_item {
+  display: flex;
+  gap: 10px;
+}
+.menu_container {
+  display: flex;
+  flex-direction: column;
+}
+.menu_container .link {
+  padding-left: 20px;
+  border-bottom: #fff 0.5px solid;
+}

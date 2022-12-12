@@ -8,12 +8,7 @@ import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import Header from "../../components/Header";
-import {
-  GridRowModes,
-  DataGridPro,
-  GridToolbarContainer,
-  GridActionsCellItem,
-} from '@mui/x-data-grid-pro';
+import {GridActionsCellItem} from '@mui/x-data-grid-pro';
 import axios from "axios";
 import {Navigate, useNavigate} from 'react-router-dom';
 const FAQ = () => {

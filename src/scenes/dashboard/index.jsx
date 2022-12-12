@@ -22,7 +22,7 @@ const Dashboard = () => {
     <Box m="20px">
       {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
+        <Header title="Hello Faaiz" subtitle="Welcome to your dashboard" />
         {/*        
         <Box>
           <Button
@@ -178,8 +178,8 @@ const Dashboard = () => {
             justifyContent="space-between"
             alignItems="center"
             borderBottom={`4px solid ${colors.primary[500]}`}
-            colors={colors.grey[100]}
-            p="15px"
+            colors={colors.grey[500]}
+            p="25px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
               Recent Complaints
@@ -202,17 +202,16 @@ const Dashboard = () => {
                 >
                   {transaction.txId}
                 </Typography>
-                <Typography color={colors.grey[100]}>
+                <Typography color={colors.grey[100]} >
                   {transaction.user}
                 </Typography>
               </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
               <Button
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
+                backgroundColor={colors.primary[700]}
+                p="5px 5px"
                 borderRadius="4px"
               >
-                  View
+                  View Complaint
               </Button>
             </Box>
           ))}
