@@ -2,8 +2,12 @@ import { NavLink } from "react-router-dom";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import ReportIcon from '@mui/icons-material/Report';
+import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import SubjectIcon from '@mui/icons-material/Subject';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Cookies from 'js-cookie'
 import ChatIcon from '@mui/icons-material/Chat';
@@ -36,7 +40,24 @@ const routes = [
   {
     path: "/dashboard/complaint",
     name: "Complaint Management",
-    icon: <HelpOutlineOutlinedIcon/>,
+    icon: <ReportIcon/>,
+    subRoutes: [
+      {
+        path: "/dashboard/complaint/pending",
+        name: "Pending Complaints ",
+        icon: <PendingActionsIcon/>,
+      },
+      {
+        path: "/dashboard/complaint/assigned",
+        name: "Assigned Complaint",
+        icon: <AssignmentIcon/>,
+      },
+      {
+        path: "/dashboard/complaint/completed",
+        name: "Completed Complaints",
+        icon: <AssignmentTurnedInIcon />,
+      },
+    ],
   },
   {
     path: "/dashboard/chat",
@@ -59,14 +80,14 @@ const Sidebar = ({ children }) => {
       width: 0,
       opacity: 0,
       transition: {
-        duration: 0.5,
+        duration: 0.05,
       },
     },
     show: {
       opacity: 1,
       width: "auto",
       transition: {
-        duration: 0.5,
+        duration: 0.05,
       },
     },
   };
@@ -104,14 +125,14 @@ const Sidebar = ({ children }) => {
                   exit="hidden"
                   className="logo"
                 >
-                  K Electric Representative
+                  K Electric Dashboard
                 </motion.h1>
               )}
             </AnimatePresence>
           </div>
           <section className="routes">
           <div className="bars">
-              <ArrowBackIosIcon onClick={toggle} />
+              <SubjectIcon onClick={toggle} />
             </div>
             {routes.map((route, index) => {
               if (route.subRoutes) {

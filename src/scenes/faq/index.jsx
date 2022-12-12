@@ -3,9 +3,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { useState,useEffect } from "react";
 import { mockDataTeam } from "../../data/mockData";
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
-import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import Header from "../../components/Header";
 import {GridActionsCellItem} from '@mui/x-data-grid-pro';
@@ -90,7 +87,7 @@ const FAQ = () => {
 
   return (
     <Box m="20px">
-      <Header title="Complaint List" subtitle="Managing Complaints" />
+      <Header title="Pending Complaint List" subtitle="Managing New Complaints" />
       <Box
         m="42px 0 0 0"
         height="75vh"
@@ -120,7 +117,7 @@ const FAQ = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={tableData} columns={columns} getRowId={(row) => row.complain_no} />
+        <DataGrid rows={tableData} columns={columns} getRowId={(row) => row.complain_no} />
       </Box>
     </Box>
   );

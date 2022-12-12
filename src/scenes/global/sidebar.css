@@ -21,12 +21,12 @@ main {
 .sidebar {
   background: rgb(0, 7, 61);
   color: rgb(255, 255, 255);
-  height: 110%;
+  height: 110vh;
   overflow-y: auto;
 }
 .icon{
   padding-left: 15px;
-  height: 50px;
+  height: 30px;
   margin-bottom: 15px;
 }
 .top_section {
@@ -80,7 +80,7 @@ main {
 
 .menu {
   display: flex;
-  color: white;
+  color: rgb(255, 255, 255);
 
   padding: 5px 10px;
   border-right: 4px solid transparent;
@@ -97,5 +97,5 @@ main {
 }
 .menu_container .link {
   padding-left: 20px;
-  border-bottom: #fff 0.5px solid;
+  
 }

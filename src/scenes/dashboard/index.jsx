@@ -1,4 +1,6 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import FireTruckIcon from '@mui/icons-material/FireTruck';
@@ -8,8 +10,6 @@ import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../components/Header";
 import LineChart from "../../components/LineChart";
 import StatBox from "../../components/StatBox";
-
-
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -95,7 +95,7 @@ const Dashboard = () => {
             progress="0.23"
             increase="+23%"
             icon={
-              <ConstructionIcon
+              <TaskAltIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }
@@ -109,12 +109,12 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="1,325,134"
-            subtitle="Traffic Received"
+            title="52"
+            subtitle="Complaints Assigned "
             progress="0.80"
             increase="+43%"
             icon={
-              <TrafficIcon
+              <AssignmentIcon
                 sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
               />
             }

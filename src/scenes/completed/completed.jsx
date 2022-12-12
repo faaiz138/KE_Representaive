@@ -3,25 +3,26 @@ import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { useState,useEffect } from "react";
 import { mockDataTeam } from "../../data/mockData";
-import Header from "../../components/Header";
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import { GridActionsCellItem } from '@mui/x-data-grid-pro';
-const Team = () => {
+import Header from "../../components/Header";
+import {GridActionsCellItem} from '@mui/x-data-grid-pro';
+import axios from "axios";
+import {Navigate, useNavigate} from 'react-router-dom';
+const Completed = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [tableData, setTableData] = useState([])
   const [rows, setRows] = useState(tableData);
   const [deletedRows, setDeletedRows] = useState([]);
-  const handleDeleteClick = (id) => () => {
-    setTableData(tableData.filter((row) => row.id !== id));
-  };
+
   const columns = [
-    { field: 'supervisor_id', headerName: 'ID' },
-    { field: 'email', headerName: 'Email', width: 200 },
-    { field: 'first_name', headerName: 'First Name', width: 200 },
-    { field: 'last_name', headerName: 'Last Name', width: 200 },
-    { field: 'contact_no', headerName: 'Contact', width: 200 },
-    { field: 'cnic', headerName: 'CNIC', width: 100 },
+    { field: 'complain_no', headerName: 'Complain #', width: 65},
+    { field: 'complain_type', headerName: 'Type', width: 150 },
+    { field: 'complain_status', headerName: 'Status', width: 100 },
+    { field: 'affected_area', headerName: 'Area Affected', width: 150 },
+    { field: 'consumer_id', headerName: 'Consumer ID', width: 100 },
+    { field: 'account_no', headerName: 'Account Number', width: 100 },
+    { field: 'details', headerName: 'Complain Details', width: 400 },
     {
       field: 'actions',
       type: 'actions',
@@ -41,9 +42,34 @@ const Team = () => {
       },
     },
   ]
+  const handleDeleteClick = (id) => () => {
+    setTableData(tableData.filter((row) => row.id !== id));
+    delete_acc(id.account_no,id.consumer_id,id.complain_no,id)
+  };
+  async function delete_acc(account_no,consumer_id,complain_no,id)
+  {
+    const response = await axios.delete('http://localhost:3080/employee_complain/deleteComplain',
+    {
+      data: {
+        account_no : account_no,
+        consumer_id : consumer_id,
+        complain_no:complain_no
 
+      },
+      withCredentials:true,
+    }
+    );
+    if(response.status===200)
+    {
+      const newData = [...tableData];
+      const prevIndex = tableData.findIndex((item) => item.key === id);
+      newData.splice(prevIndex, 1);
+      setTableData(newData);
+      console.log(response);
+    }   
+  }
   useEffect(() => {
-    fetch("http://localhost:3080/Supervisor/getsupervisor",{   method: "GET", 
+    fetch("http://localhost:3080/employee_complain/getpendingcomplains",{   method: "GET", 
     'credentials': 'include',
      headers: new Headers({
          'Accept': 'application/json',
@@ -61,9 +87,9 @@ const Team = () => {
 
   return (
     <Box m="20px">
-      <Header title="Supervisor List" subtitle="Managing the Supervisors" />
+      <Header title="Completed Complaints List" subtitle="View All the Resolved Complaints " />
       <Box
-        m="40px 0 0 0"
+        m="42px 0 0 0"
         height="75vh"
         sx={{
           "& .MuiDataGrid-root": {
@@ -91,10 +117,9 @@ const Team = () => {
           },
         }}
       >
-        <DataGrid  rows={tableData} columns={columns} getRowId={(row) => row.supervisor_id} />
+        <DataGrid rows={tableData} columns={columns} getRowId={(row) => row.complain_no} />
       </Box>
     </Box>
   );
 };
-
-export default Team;
+export default Completed;

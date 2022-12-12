@@ -8,13 +8,14 @@ import Invoices from "../../scenes/invoices";
 import BillGeneration from "../../scenes/BillGeneration";
 import Bar from "../../scenes/bar";
 import Form from "../../scenes/form";
-import Line from "../../scenes/line";
+import AssignedComplaint from "../../scenes/assigned/assigned";
 import FAQ from "../../scenes/faq";
 import Chat from "../../scenes/chat/Chat"
 import Geography from "../../scenes/geography";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./../../theme";
 import Calendar from "../../scenes/calendar/calendar";
+import CompletedComplaint from '../../scenes/completed/completed'
 import 'bootstrap/dist/css/bootstrap.min.css'
 function MainDashboard() {
   const [theme, colorMode] = useMode();
@@ -35,7 +36,9 @@ function MainDashboard() {
               <Route path="/invoices" element={<Invoices />} />
               <Route path="register" element={<Form />} />
               <Route path="/bar" element={<Bar />} />
-              <Route path="complaint" element={<FAQ />} />
+              <Route path="complaint/pending" element={<FAQ />} />
+              <Route path="complaint/assigned" element={<AssignedComplaint />} />
+              <Route path="complaint/completed" element={<CompletedComplaint />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="chat" element={<Chat/>} />
             </Routes>

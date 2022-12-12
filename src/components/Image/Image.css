@@ -1,11 +1,12 @@
 .img img{
     float: right;
     position: relative;
+    width: 92%;
 }
 .img figcaption1{
     position: absolute;
     bottom: -95px;
-    left: -200px;
+    left: -250px;
     width: 100%;
     font-size: 40px;
     text-align: center;
@@ -16,8 +17,8 @@
 }
 .img figcaption2{
     position: absolute;
-    bottom: -350px;
-    left: 440px;
+    bottom: -420px;
+    left: 420px;
     width: 100%;
     font-size: 20px;
     text-align: center;
