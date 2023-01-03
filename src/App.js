@@ -8,8 +8,10 @@ import FAQ from "../src/scenes/faq";
 import Assigned from './scenes/assigned/assigned';
 import BillGeneration from "../src/scenes/BillGeneration/index";
 import Form from "../src/scenes/form";
+import Maps from './scenes/maps/Maps';
 import Chat from "../src/scenes/chat/Chat";
 import Completed from './scenes/completed/completed';
+import Resolve from './scenes/resolve/Resolve'
 import Cookies from 'js-cookie'
 function App() {
 
@@ -26,7 +28,9 @@ function App() {
               <Route path="/dashboard/complaint/pending" element={<ProtectedRoute><FAQ /></ProtectedRoute>} />
               <Route path="/dashboard/complaint/assigned" element={<ProtectedRoute><Assigned /></ProtectedRoute>} />
               <Route path="/dashboard/complaint/completed" element={<ProtectedRoute><Completed/></ProtectedRoute>} />
+              <Route path="/dashboard/complaint/completed/resolve" element={<ProtectedRoute><Resolve/></ProtectedRoute>} />
               <Route path="register" element={<ProtectedRoute><Form /></ProtectedRoute>} />
+              <Route path="/dashboard/tracking" element={<ProtectedRoute><Completed /></ProtectedRoute>} />
               <Route path="chat" element={<ProtectedRoute><Chat/></ProtectedRoute>} />
         </Route>
       </Routes>

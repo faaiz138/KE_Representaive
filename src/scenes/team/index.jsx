@@ -17,9 +17,9 @@ const Team = () => {
   };
   const columns = [
     { field: 'supervisor_id', headerName: 'ID' },
-    { field: 'email', headerName: 'Email', width: 200 },
-    { field: 'first_name', headerName: 'First Name', width: 200 },
-    { field: 'last_name', headerName: 'Last Name', width: 200 },
+    { field: 'email', headerName: 'Email', width: 160 },
+    { field: 'first_name', headerName: 'First Name', width: 160 },
+    { field: 'last_name', headerName: 'Last Name', width: 160 },
     { field: 'contact_no', headerName: 'Contact', width: 200 },
     { field: 'cnic', headerName: 'CNIC', width: 100 },
     {

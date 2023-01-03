@@ -7,6 +7,7 @@ import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import SubjectIcon from '@mui/icons-material/Subject';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Cookies from 'js-cookie'
@@ -24,7 +25,7 @@ const routes = [
   },
   {
     path: "/dashboard/team",
-    name: "Team",
+    name: "Supervisor List",
     icon: <PeopleOutlinedIcon/>,
   },
   {
@@ -58,6 +59,11 @@ const routes = [
         icon: <AssignmentTurnedInIcon />,
       },
     ],
+  },
+  {
+    path: "/dashboard/tracking",
+    name: "Supervisor Tracking",
+    icon: <PersonPinCircleIcon/>,
   },
   {
     path: "/dashboard/chat",

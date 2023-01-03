@@ -10,12 +10,14 @@ import Bar from "../../scenes/bar";
 import Form from "../../scenes/form";
 import AssignedComplaint from "../../scenes/assigned/assigned";
 import FAQ from "../../scenes/faq";
+import Tracking from "../../scenes/maps/Maps"
 import Chat from "../../scenes/chat/Chat"
 import Geography from "../../scenes/geography";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./../../theme";
 import Calendar from "../../scenes/calendar/calendar";
 import CompletedComplaint from '../../scenes/completed/completed'
+import Resolve from '../../scenes/resolve/Resolve'
 import 'bootstrap/dist/css/bootstrap.min.css'
 function MainDashboard() {
   const [theme, colorMode] = useMode();
@@ -39,7 +41,9 @@ function MainDashboard() {
               <Route path="complaint/pending" element={<FAQ />} />
               <Route path="complaint/assigned" element={<AssignedComplaint />} />
               <Route path="complaint/completed" element={<CompletedComplaint />} />
+              <Route path="complaint/completed/resolve" element={<Resolve />} />
               <Route path="/calendar" element={<Calendar />} />
+              <Route path="tracking" element={<Tracking />} />
               <Route path="chat" element={<Chat/>} />
             </Routes>
           </main>
