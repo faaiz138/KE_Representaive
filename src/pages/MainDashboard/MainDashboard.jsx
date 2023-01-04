@@ -12,7 +12,7 @@ import AssignedComplaint from "../../scenes/assigned/assigned";
 import FAQ from "../../scenes/faq";
 import Tracking from "../../scenes/maps/Maps"
 import Chat from "../../scenes/chat/Chat"
-import Geography from "../../scenes/geography";
+import CustomerChat from '../../scenes/customerChat/Chat'
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./../../theme";
 import Calendar from "../../scenes/calendar/calendar";
@@ -45,6 +45,7 @@ function MainDashboard() {
               <Route path="/calendar" element={<Calendar />} />
               <Route path="tracking" element={<Tracking />} />
               <Route path="chat" element={<Chat/>} />
+              <Route path="chatCustomer" element={<CustomerChat/>} />
             </Routes>
           </main>
         </div>

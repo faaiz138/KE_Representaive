@@ -6,11 +6,11 @@ import '../chat/Chat.css'
 const Chat = () => {
   return (
     <Box m="20px">
-      <Header title="Supervisor Chat" subtitle="Contact with Supervisor" />
+      <Header title="Consumer Chat" subtitle="Contact with Consumer" />
       <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">
-            <input placeholder="Search Supervisor" className="chatMenuInput"></input>
+            <input placeholder="Search Consumer" className="chatMenuInput"></input>
             <Conversation/>
           </div>
           </div>

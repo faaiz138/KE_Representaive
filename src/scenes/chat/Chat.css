@@ -1,5 +1,5 @@
 .messenger{
-    height: calc(100vh - 70px);
+    height: 90%;
     display: flex;
 }
 .chatMenu{

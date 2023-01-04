@@ -216,7 +216,7 @@ const Completed = () => {
             <ElectricBoltIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Type" secondary="Billing Issue" />
+        <ListItemText primary="Type" secondary={rows.complain_type} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -251,9 +251,6 @@ const Completed = () => {
         />
       </CardActionArea>
     </Card>
-    <Link to="/dashboard/complaint/completed/resolve">
-    <Button sx={{mt:2}}variant="contained" color="success">Resolve</Button> 
-    </Link>  
           </Box>
         </Fade>
       </Modal>

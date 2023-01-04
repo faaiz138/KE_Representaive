@@ -2,11 +2,32 @@ import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import { mockLineData as data } from "../data/mockData";
+import { useState,useEffect } from "react";
+
+
+
 
 const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
+  const [gdata,setgData] = useState([])
+
+
+
+  useEffect(() => {
+    fetch("http://localhost:3080/complaint_graph",{   method: "GET", 
+    'credentials': 'include',
+     headers: new Headers({
+         'Accept': 'application/json',
+         'Access-Control-Allow-Origin':'http://localhost:3000/',
+         'Content-Type': 'application/json',
+  })
+  
+  })
+      .then((data) => data.json())
+      .then((data) => setgData(data))
+  }, [])
+  console.log(gdata)
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
   return (
     <ResponsiveLine
       data={data}

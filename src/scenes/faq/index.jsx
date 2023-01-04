@@ -397,7 +397,7 @@ const FAQ = () => {
             <ElectricBoltIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Type" secondary="Billing Issue" />
+        <ListItemText primary="Type" secondary={rows.complain_type}/>
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>

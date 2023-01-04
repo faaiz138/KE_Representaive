@@ -6,6 +6,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import Alert from '@mui/material/Alert';
 import axios from "axios";
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 const Form = () => {
   const [submit,setSubmit] = useState(false)
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -149,9 +150,29 @@ const Form = () => {
                 name="cnic"
                 error={!!touched.cnic && !!errors.cnic}
                 helperText={touched.cnic && errors.cnic}
-                sx={{ gridColumn: "span 4" }}
+                sx={{ gridColumn: "span 2" }}
               />
-              
+               <TextField
+                type="file"
+                sx={{ gridColumn: "span 2" }}
+                accept="image/*"
+                variant="outlined"
+                InputProps={{
+                  endAdornment: (
+                    <div>
+                      <input
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        id="icon-button-file"
+                        type="file"
+                      />
+                      <label htmlFor="icon-button-file">
+                          <PhotoCameraIcon />
+                      </label>
+                    </div>
+                  ),
+                }}
+              />   
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="success" variant="contained">

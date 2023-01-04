@@ -9,7 +9,7 @@ import SubjectIcon from '@mui/icons-material/Subject';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import PersonPinCircleIcon from '@mui/icons-material/PersonPinCircle';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import Cookies from 'js-cookie'
 import ChatIcon from '@mui/icons-material/Chat';
 import Logout from "@mui/icons-material/Logout";
@@ -69,6 +69,11 @@ const routes = [
     path: "/dashboard/chat",
     name: "Supervisor Chat",
     icon: <ChatIcon/>,
+  },
+  {
+    path: "/dashboard/chatCustomer",
+    name: "Consumer Chat",
+    icon: <SupportAgentIcon/>,
   },
   {
     path: "/",

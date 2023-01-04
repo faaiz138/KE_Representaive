@@ -12,6 +12,7 @@ import Maps from './scenes/maps/Maps';
 import Chat from "../src/scenes/chat/Chat";
 import Completed from './scenes/completed/completed';
 import Resolve from './scenes/resolve/Resolve'
+import CustomerChat from './scenes/customerChat/Chat'
 import Cookies from 'js-cookie'
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
               <Route path="register" element={<ProtectedRoute><Form /></ProtectedRoute>} />
               <Route path="/dashboard/tracking" element={<ProtectedRoute><Completed /></ProtectedRoute>} />
               <Route path="chat" element={<ProtectedRoute><Chat/></ProtectedRoute>} />
+              <Route path="chatCustomer" element={<ProtectedRoute><CustomerChat/></ProtectedRoute>} />
         </Route>
       </Routes>
     </div>
