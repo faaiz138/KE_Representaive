@@ -1,12 +1,10 @@
 import React from 'react'
 import './Image.css'
-import People from "../../components/Carousel/People-bg-new.jpg"
+import People from "../../components/Carousel/People-bg-new.png"
 function Image() {
   return (
     <div className='img'>
-      <img src={People} alt="sample" width="82.85%"></img>
-      <figcaption1>Transforming Lives</figcaption1>
-      <figcaption2>State of the Art Customer Service</figcaption2>
+      <img src={People} alt="sample" width="100"></img>
       </div>
   )
 }
