@@ -282,11 +282,26 @@ const Chat = ({ route, navigation }) => {
             sx={{
               backgroundColor: green[800],
               marginTop: '270px',
-              width: '40%',
+              width: '26%',
               height: '50px',
-              fontSize: '1.2rem',
-              marginRight:'40px',
-              marginLeft:'15px'
+              fontSize: '0.9rem',
+              marginRight:'2px',
+              marginLeft:'24px'
+            }}
+          >
+            Go Online
+          </Button>
+            <Button
+            variant="contained"
+            color="primary"
+            sx={{
+              backgroundColor: green[800],
+              marginTop: '270px',
+              width: '27%',
+              height: '50px',
+              fontSize: '0.9rem',
+              marginRight:'10px',
+              marginLeft:'10px'
             }}
           >
             End Chat 1
@@ -297,9 +312,9 @@ const Chat = ({ route, navigation }) => {
             sx={{
               backgroundColor: green[800],
               marginTop: '270px',
-              width: '40%',
+              width: '27%',
               height: '50px',
-              fontSize: '1.2rem',
+              fontSize: '0.9rem',
             }}
           >
             End Chat 2
