@@ -231,7 +231,7 @@ const Chat = ({ route, navigation }) => {
   );
   return (
     <div>
-      <Header title="Customer Chat" subtitle="Chat with Customer" />
+      <Header title="Supervisor Chat" subtitle="Chat with Supervisor" />
       <Grid container component={Paper} sx={classes.chatSection}>
         <Grid item xs={3} sx={classes.borderRight500}>
           <List>

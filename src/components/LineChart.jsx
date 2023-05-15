@@ -1,36 +1,61 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
-import { mockLineData as data } from "../data/mockData";
 import { useState,useEffect } from "react";
-
-
-
-
 const LineChart = ({ isCustomLineColors = false, isDashboard = false }) => {
   const [gdata,setgData] = useState([])
-
-
-
   useEffect(() => {
-    fetch("http://localhost:3080/complaint_graph",{   method: "GET", 
+    fetch("http://localhost:3080/employee_complain/complaint_graph",{   method: "GET", 
     'credentials': 'include',
      headers: new Headers({
          'Accept': 'application/json',
          'Access-Control-Allow-Origin':'http://localhost:3000/',
          'Content-Type': 'application/json',
   })
-  
   })
       .then((data) => data.json())
       .then((data) => setgData(data))
   }, [])
-  console.log(gdata)
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const convertedData = gdata.map(item => {
+
+    return {
+      "x": item.x,
+      "y": parseInt(item.y)
+    };
+  });
+  const linegraphData = [
+    {
+      id: "Complaint",
+      color: tokens("dark").greenAccent[500],
+      data: convertedData
+    }
+  ];
+  const maxX = Math.max(...linegraphData[0].data.map(item => item.x));
+  const minX = Math.min(...linegraphData[0].data.map(item => item.x));
+  const allXValues = Array.from({ length: maxX - minX + 1 }, (_, index) => index + minX);
+  const newData = allXValues.map(x => {
+    const existingData = linegraphData[0].data.find(item => item.x === x);
+    return existingData || { x, y: 0 };
+  });
+  linegraphData[0].data = newData;
+  const newconvertedData = linegraphData.map(item => {
+
+    return {
+      "x": item.x,
+      "y": parseInt(item.y)
+    };
+  });
+
+  console.log(linegraphData)
+  
+
+
+
   return (
     <ResponsiveLine
-      data={data}
+      data={linegraphData}
       theme={{
         axis: {
           domain: {

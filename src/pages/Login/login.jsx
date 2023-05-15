@@ -23,6 +23,7 @@ function Login(){
         if(e.target.type==='email')
         {
             setEmail(e.target.value)
+            localStorage.setItem('loggedInUserEmail', e.target.value);
         }
         else{
             setPassword(e.target.value)

@@ -1,22 +1,19 @@
 import MainDashboard from './pages/MainDashboard/MainDashboard';
 import Homepage from '../src/pages/Homepage/Homepage'
 import Login from './pages/Login/login';
-import {Routes, Route,Navigate,useNavigate } from "react-router-dom";
+import {Routes, Route,useNavigate } from "react-router-dom";
 import Dashboard from "../src/scenes/dashboard/index";
 import Team from "../src/scenes/form/index";
-import FAQ from "../src/scenes/faq";
+import FAQ from "./scenes/pendingComplaint";
 import Assigned from './scenes/assigned/assigned';
 import BillGeneration from "../src/scenes/BillGeneration/index";
 import Form from "../src/scenes/form";
-import Maps from './scenes/maps/Maps';
-import Chat from "../src/scenes/chat/Chat";
-import Completed from './scenes/completed/completed';
+import Chat from "./scenes/chatSupervisor/Chat";
+import Completed from './scenes/completedComplains/completed';
 import Resolve from './scenes/resolve/Resolve'
 import CustomerChat from './scenes/customerChat/Chat'
 import Cookies from 'js-cookie'
 function App() {
-
-
   return (
     <div className="App">
       <Routes>

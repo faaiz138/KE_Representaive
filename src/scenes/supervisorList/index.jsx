@@ -1,8 +1,7 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { useState,useEffect } from "react";
-import { mockDataTeam } from "../../data/mockData";
 import Header from "../../components/Header";
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { GridActionsCellItem } from '@mui/x-data-grid-pro';
@@ -10,8 +9,6 @@ const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [tableData, setTableData] = useState([])
-  const [rows, setRows] = useState(tableData);
-  const [deletedRows, setDeletedRows] = useState([]);
   const handleDeleteClick = (id) => () => {
     setTableData(tableData.filter((row) => row.id !== id));
   };

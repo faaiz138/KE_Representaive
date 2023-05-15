@@ -436,52 +436,52 @@ export const mockLineData = [
     color: tokens("dark").greenAccent[500],
     data: [
       {
-        x: "Jan",
-        y: 18,
+        "x": 1,
+        "y": 18,
       },
       {
-        x: "Feb",
-        y: 11,
+        "x" : 2,
+        "y": 11,
       },
       {
-        x: "Mar",
-        y: 30,
+        "x": 3,
+        "y": 30,
       },
       {
-        x: "Apr",
-        y: 26,
+        "x": 4,
+        "y": 26,
       },
       {
-        x: "May",
-        y: 46,
+        "x": "May",
+        "y": 46,
       },
       {
-        x: "Jun",
-        y: 34,
+        "x": "Jun",
+        "y": 0,
       },
       {
         x: "Jul",
-        y: 25,
+        y: 0,
       },
       {
         x: "Aug",
-        y: 20,
+        y: 0,
       },
       {
         x: "Sept",
-        y: 45,
+        y: 0,
       },
       {
         x: "Oct",
-        y: 40,
+        y: 0,
       },
       {
         x: "Nov",
-        y: 30,
+        y: 0,
       },
       {
         x: "Dec",
-        y: 35,
+        y: 0,
       },
     ],
   }

@@ -7,10 +7,8 @@ import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Divider from '@mui/material/Divider';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import Header from "../../components/Header";
 import {GridActionsCellItem} from '@mui/x-data-grid-pro';
-import axios from "axios";
 import NumbersIcon from '@mui/icons-material/Numbers';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -19,41 +17,10 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import HomeIcon from '@mui/icons-material/Home';
-import StatBox from "../../components/StatBox";
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import DescriptionIcon from '@mui/icons-material/Description';
 import TimelapseIcon from '@mui/icons-material/Timelapse';
 import Stack from '@mui/material/Stack';
-const ITEM_HEIGHT = 30;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4 + ITEM_PADDING_TOP,
-      width: 100,
-    },
-  },
-};
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
 const style = {
   position: 'absolute',
   top: '50%',
@@ -69,51 +36,18 @@ const style = {
 const Assigned = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [tableData, setTableData] = useState([])
-  const [rows, setRows] = useState(tableData);
-  const [deletedRows, setDeletedRows] = useState([]);
+  const [supervisorData,setSupervisorData]= useState([]);
+  const [rows2, setRows2] = useState(supervisorData);
   const [open, setOpen] = useState(false);
-  const [personName, setPersonName] = useState([]);
-
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
-  };
-
-
-
 
   const columns = [
-    { field: 'complain_no', headerName: 'Complain #', width: 65},
-    { field: 'complain_type', headerName: 'Type', width: 100 },
-    { field: 'complain_status', headerName: 'Status', width: 100 },
-    { field: 'affected_area', headerName: 'Area Affected', width: 100 },
-    { field: 'consumer_id', headerName: 'Consumer ID', width: 100 },
+    { field: 'complain_no', headerName: 'Complain #', width: 80},
+    {field: 'supervisor_id', headerName: 'Supervisor ID',width: 100},
+    { field: 'complain_type', headerName: 'Type', width: 150 },
+    {field: 'first_name', headerName: 'Supervisor Assigned',width:150},
+    { field: 'affected_area', headerName: 'Area Affected', width: 150 },
     { field: 'account_no', headerName: 'Account Number', width: 100 },
     { field: 'details', headerName: 'Complain Details', width: 300 },
-    {
-      field: 'actions',
-      type: 'actions',
-      headerName: 'Actions',
-      width: 100,
-      cellClassName: 'actions',
-      getActions: ({ row }) => {
-
-        return [
-          <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={handleDeleteClick(row)}
-            color="inherit"
-          />,
-        ];
-      },
-    },
     {
       field: 'Preview',
       type: 'actions',
@@ -135,36 +69,11 @@ const Assigned = () => {
   ]
   const handlePreviewClick = (id) => () => {
     setOpen(true)
-    setRows(id)
+    setRows2(id)
   }
-  const handleDeleteClick = (id) => () => {
-    setTableData(tableData.filter((row) => row.id !== id));
-    delete_acc(id.account_no,id.consumer_id,id.complain_no,id)
-  };
-  async function delete_acc(account_no,consumer_id,complain_no,id)
-  {
-    const response = await axios.delete('http://localhost:3080/employee_complain/deleteComplain',
-    {
-      data: {
-        account_no : account_no,
-        consumer_id : consumer_id,
-        complain_no:complain_no
-
-      },
-      withCredentials:true,
-    }
-    );
-    if(response.status===200)
-    {
-      const newData = [...tableData];
-      const prevIndex = tableData.findIndex((item) => item.key === id);
-      newData.splice(prevIndex, 1);
-      setTableData(newData);
-      console.log(response);
-    }   
-  }
+ 
   useEffect(() => {
-    fetch("http://localhost:3080/employee_complain/getpendingcomplains",{   method: "GET", 
+    fetch("http://localhost:3080/user_complain/get_supervisor_complain",{   method: "GET", 
     'credentials': 'include',
      headers: new Headers({
          'Accept': 'application/json',
@@ -173,10 +82,9 @@ const Assigned = () => {
  })
 })
       .then((data) => data.json())
-      .then((data) => setTableData(data))
+      .then((data) => setSupervisorData(data))
 
   }, [])
-  console.log(tableData);
   const handleClose = () => setOpen(false);
   return (
     <Box m="20px">
@@ -209,8 +117,9 @@ const Assigned = () => {
             color: `${colors.greenAccent[200]} !important`,
           },
         }}
+        
       >
-        <DataGrid rows={tableData} columns={columns} getRowId={(row) => row.complain_no} />
+        <DataGrid rows={supervisorData} columns={columns} getRowId={(row) => row.complain_no} />
         <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -236,7 +145,7 @@ const Assigned = () => {
             <NumbersIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Supervisor ID" secondary="54585"/>
+        <ListItemText primary="Supervisor ID" secondary={rows2.supervisor_id}/>
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -245,7 +154,7 @@ const Assigned = () => {
             <PermIdentityIcon/>
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Supervisor Name" secondary="Ali Khan"/>
+        <ListItemText primary="Supervisor Name" secondary={rows2.first_name+ ' '+ rows2.last_name}/>
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -254,7 +163,7 @@ const Assigned = () => {
             <ElectricBoltIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Type" secondary={rows.complain_type} />
+        <ListItemText primary="Type" secondary={rows2.complain_type} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -263,7 +172,7 @@ const Assigned = () => {
             <HomeIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Area Affected" secondary={rows.affected_area} />
+        <ListItemText primary="Area Affected" secondary={rows2.affected_area} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -272,7 +181,7 @@ const Assigned = () => {
             <TimelapseIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Estimated Time" secondary= "53 Minuites" />
+        <ListItemText primary="Estimated Time" secondary= {rows2.estimated_time} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -281,7 +190,7 @@ const Assigned = () => {
             <PermIdentityIcon/>
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Account Number" secondary={rows.account_no}/>
+        <ListItemText primary="Account Number" secondary={rows2.account_no}/>
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -290,7 +199,7 @@ const Assigned = () => {
             <DescriptionIcon/>
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Complain Details" secondary={rows.details} />
+        <ListItemText primary="Complain Details" secondary={rows2.details} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <Typography align="center" style={{ paddingTop: '10px' }} variant="h5" gutterBottom>
@@ -298,18 +207,9 @@ const Assigned = () => {
       </Typography>
     </List>   
     <Stack
-        direction="row"
-        divider={<Divider orientation="vertical" flexItem />}
-        spacing={1}
       >
         <Box style={{ backgroundColor: '#f5f5f5',border: '1px solid black' }} display="flex" justifyContent="center" alignItems="center" p={2}>
-        Need Hardware Tools
-        </Box>
-        <Box  style={{backgroundColor: '#f5f5f5', border: '1px solid black' }} display="flex" justifyContent="center" alignItems="center" p={2}>
-        Will Be Fixed Soon
-        </Box>
-        <Box  style={{backgroundColor: '#f5f5f5' ,border: '1px solid black' }} display="flex" justifyContent="center" alignItems="center" p={2}>
-        Need Backup for Quick Resolve
+        {rows2.supervisor_detail}
         </Box>
       </Stack>
           </Box>

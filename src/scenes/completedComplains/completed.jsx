@@ -8,10 +8,8 @@ import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Divider from '@mui/material/Divider';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import Header from "../../components/Header";
 import {GridActionsCellItem} from '@mui/x-data-grid-pro';
-import axios from "axios";
 import NumbersIcon from '@mui/icons-material/Numbers';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -21,21 +19,9 @@ import Avatar from '@mui/material/Avatar';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import DescriptionIcon from '@mui/icons-material/Description';
-import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import { Button, CardActionArea, CardActions } from '@mui/material';
-import Stack from '@mui/material/Stack';
-const ITEM_HEIGHT = 30;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4 + ITEM_PADDING_TOP,
-      width: 100,
-    },
-  },
-};
+import { CardActionArea } from '@mui/material';
 const style = {
   position: 'absolute',
   top: '50%',
@@ -51,40 +37,18 @@ const style = {
 const Completed = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [tableData, setTableData] = useState([])
-  const [rows, setRows] = useState(tableData);
+  const [completeData,setcompleteData]= useState([]);
+  const [rows2, setRows2] = useState(completeData);
   const [open, setOpen] = useState(false);
 
-
-
-
-
   const columns = [
-    { field: 'complain_no', headerName: 'Complain #', width: 65},
-    { field: 'complain_type', headerName: 'Type', width: 100 },
-    { field: 'complain_status', headerName: 'Status', width: 100 },
-    { field: 'affected_area', headerName: 'Area Affected', width: 100 },
-    { field: 'consumer_id', headerName: 'Consumer ID', width: 100 },
+    { field: 'complain_no', headerName: 'Complain #', width: 80},
+    {field: 'supervisor_id', headerName: 'Supervisor ID',width: 100},
+    { field: 'complain_type', headerName: 'Type', width: 150 },
+    {field: 'first_name', headerName: 'Supervisor Assigned',width:150},
+    { field: 'affected_area', headerName: 'Area Affected', width: 150 },
     { field: 'account_no', headerName: 'Account Number', width: 100 },
     { field: 'details', headerName: 'Complain Details', width: 300 },
-    {
-      field: 'actions',
-      type: 'actions',
-      headerName: 'Actions',
-      width: 100,
-      cellClassName: 'actions',
-      getActions: ({ row }) => {
-
-        return [
-          <GridActionsCellItem
-            icon={<DeleteIcon />}
-            label="Delete"
-            onClick={handleDeleteClick(row)}
-            color="inherit"
-          />,
-        ];
-      },
-    },
     {
       field: 'Preview',
       type: 'actions',
@@ -106,36 +70,11 @@ const Completed = () => {
   ]
   const handlePreviewClick = (id) => () => {
     setOpen(true)
-    setRows(id)
+    setRows2(id)
   }
-  const handleDeleteClick = (id) => () => {
-    setTableData(tableData.filter((row) => row.id !== id));
-    delete_acc(id.account_no,id.consumer_id,id.complain_no,id)
-  };
-  async function delete_acc(account_no,consumer_id,complain_no,id)
-  {
-    const response = await axios.delete('http://localhost:3080/employee_complain/deleteComplain',
-    {
-      data: {
-        account_no : account_no,
-        consumer_id : consumer_id,
-        complain_no:complain_no
-
-      },
-      withCredentials:true,
-    }
-    );
-    if(response.status===200)
-    {
-      const newData = [...tableData];
-      const prevIndex = tableData.findIndex((item) => item.key === id);
-      newData.splice(prevIndex, 1);
-      setTableData(newData);
-      console.log(response);
-    }   
-  }
+ 
   useEffect(() => {
-    fetch("http://localhost:3080/employee_complain/getpendingcomplains",{   method: "GET", 
+    fetch("http://localhost:3080/user_complain/get_supervisor_complain",{   method: "GET", 
     'credentials': 'include',
      headers: new Headers({
          'Accept': 'application/json',
@@ -144,10 +83,9 @@ const Completed = () => {
  })
 })
       .then((data) => data.json())
-      .then((data) => setTableData(data))
+      .then((data) => setcompleteData(data))
 
   }, [])
-  console.log(tableData);
   const handleClose = () => setOpen(false);
   return (
     <Box m="20px">
@@ -181,7 +119,7 @@ const Completed = () => {
           },
         }}
       >
-        <DataGrid rows={tableData} columns={columns} getRowId={(row) => row.complain_no} />
+        <DataGrid rows={completeData} columns={columns} getRowId={(row) => row.complain_no} />
         <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -207,7 +145,7 @@ const Completed = () => {
             <NumbersIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Complaint Number" secondary={rows.complain_no}/>
+        <ListItemText primary="Complaint Number" secondary={rows2.complain_no}/>
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -216,7 +154,7 @@ const Completed = () => {
             <ElectricBoltIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Type" secondary={rows.complain_type} />
+        <ListItemText primary="Type" secondary={rows2.complain_type} />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -225,7 +163,7 @@ const Completed = () => {
             <PermIdentityIcon/>
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Account Number" secondary={rows.account_no}/>
+        <ListItemText primary="Account Number" secondary={rows2.account_no}/>
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -234,7 +172,7 @@ const Completed = () => {
             <DescriptionIcon/>
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="Complain Details" secondary={rows.details} />
+        <ListItemText primary="Complain Details" secondary={rows2.details} />
       </ListItem>
       <Divider variant="middle" component="li" />
       <Typography align="center" style={{ paddingTop: '10px' }} variant="h5" gutterBottom>

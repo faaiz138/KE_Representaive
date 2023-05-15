@@ -32,7 +32,15 @@ import Stack from '@mui/material/Stack';
 import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
-import { CardActionArea, CardActions } from '@mui/material';
+import { CardActionArea } from '@mui/material';
+import PublicIcon from '@mui/icons-material/Public';
+import React, { useRef} from 'react';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import * as turf from '@turf/turf';
+import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
+import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css';
+import { Grid } from '@mui/material';
 const ITEM_HEIGHT = 30;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -44,18 +52,6 @@ const MenuProps = {
   },
 };
 var extractedNames = [];
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
 function getStyles(name, personName, theme) {
   return {
     fontWeight:
@@ -69,24 +65,132 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: '60%',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
   fontsize: 40,
   p: 2,
 };
+mapboxgl.accessToken = 'pk.eyJ1IjoiZmFhaXphc2lmIiwiYSI6ImNsZXU3dHplMjA0aGkzd212YzRraWliNGgifQ.jyvKkbsdtxS_7EC_sxPDVg';
+
+function ChildModal({ selectedSupervisorId, accountNo }) {
+  const [open, setOpen] = useState(false);
+  const [trackCordinates, setTrackCoordinates] = useState([]);
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+  const marker1 = useRef(null);
+  const marker2 = useRef(null);
+  const directions = useRef(null);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3080/supervisor/getsupervisor/${selectedSupervisorId}/${accountNo}`, {
+          method: "GET",
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': 'http://localhost:3000',
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setTrackCoordinates(data);
+        } else {
+          // Handle error case
+          console.log("Error: ", response.status);
+        }
+      } catch (error) {
+        // Handle fetch error
+        console.log("Fetch error: ", error);
+      }
+    };
+
+    fetchData();
+  }, [selectedSupervisorId, accountNo]);
+
+  console.log(parseFloat(trackCordinates.consumer_latitude));
+  useEffect(() => {
+    if (open) {
+      if (!map.current) {
+        map.current = new mapboxgl.Map({
+          container: mapContainer.current,
+          style: 'mapbox://styles/mapbox/streets-v12',
+          center: [67.0822, 24.9056], // Karachi coordinates
+          zoom: 10,
+        });
+        directions.current = new MapboxDirections({
+            accessToken: mapboxgl.accessToken,
+            unit: 'metric',
+            profile: 'mapbox/driving-traffic',
+            alternatives:true,
+            interactive: false,
+          });
+        }
+        map.current.addControl(directions.current, 'top-right');
+        directions.current.setOrigin([parseFloat(trackCordinates.supervisor_latitude),parseFloat(trackCordinates.supervisor_longitude)]);
+        directions.current.setDestination([parseFloat(trackCordinates.consumer_longitude),parseFloat(trackCordinates.consumer_latitude)]);
+        directions.current.on('route', () => {
+          // Hide the markers when a route is displayed
+          marker1.current.remove();
+          marker2.current.remove();
+        });
+    } else {
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+        marker1.current = null;
+        marker2.current = null;
+      }
+    }
+  }, [open]);
+
+  return (
+    <>
+      <Button
+        sx={{ height: 30, marginTop: '16px', backgroundColor: 'darkgreen' }}
+        onClick={handleOpen}
+      >
+        Track
+      </Button>
+      {open && (
+        <Box sx={{ height: '50%', width: '100%' }}>
+          <Box
+            sx={{ height: 'calc(57vh - 50px)', width: '100%' }}
+            ref={mapContainer}
+          />
+           <Button
+          sx={{ height: 30, marginTop: '16px', backgroundColor: 'darkgreen' }}
+          onClick={handleClose}
+          >Close Map</Button>
+        </Box>
+      )}
+    </>
+  );
+}
+
 const FAQ = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [tableData, setTableData] = useState([])
   const [rows, setRows] = useState([]);
-  const [deletedRows, setDeletedRows] = useState([]);
   const [open, setOpen] = useState(false);
   const [billOpen,setbillOpen] = useState(false);
   const [nameData,setNameData] = useState([])
   const [personName, setPersonName] = useState([]);
   const [count,setCount] = useState(0)
+  const [selectedSupervisorId, setSelectedSupervisorId] = useState('');
 
   useEffect(() => {
     extractedNames = []
@@ -102,11 +206,7 @@ const FAQ = () => {
       .then((data) => data.json())
       .then((data) => setNameData(data))
   }, [])
-
-
-
-
-
+  
   const handleChange = (event) => {
     const {
       target: { value },
@@ -116,8 +216,6 @@ const FAQ = () => {
       typeof value === 'string' ? value.split(',') : value,
     );
   };
-
-
   const columns = [
     { field: 'complain_no', headerName: 'Complain #', width: 65},
     { field: 'complain_type', headerName: 'Type', width: 100 },
@@ -133,7 +231,6 @@ const FAQ = () => {
       width: 100,
       cellClassName: 'actions',
       getActions: ({ row }) => {
-
         return [
           <GridActionsCellItem
             icon={<DeleteIcon />}
@@ -151,7 +248,6 @@ const FAQ = () => {
       width: 100,
       cellClassName: 'actions',
       getActions: ({ row }) => {
-
         return [
           <GridActionsCellItem
             icon={<PreviewIcon />}
@@ -164,7 +260,6 @@ const FAQ = () => {
     },
   ]
   const handlePreviewClick = (id) => () => {
-    console.log(id.complain_type)
     if(id.complain_type==='Voltage Complaint' || id.complain_type==='Faulty Meter' || id.complain_type==='Phase Complaint' ||  id.complain_type==='Supply OFF/PMT Complaint')
     {
       setOpen(true)
@@ -180,13 +275,12 @@ const FAQ = () => {
         {
           const row = nameData[i];
           const name = `${row.first_name} ${row.last_name}`;
-          extractedNames.push(name);
+          const supervisorId = row.supervisor_id; // Get the supervisor ID from the nameData object
+          extractedNames.push({ name, supervisor_id: supervisorId });
         }
-        console.log(extractedNames)
       }
       
   }
-  
   const handleDeleteClick = (id) => () => {
     setTableData(tableData.filter((row) => row.id !== id));
     delete_acc(id.account_no,id.consumer_id,id.complain_no,id)
@@ -219,13 +313,11 @@ const FAQ = () => {
          'Accept': 'application/json',
          'Access-Control-Allow-Origin':'http://localhost:3000/',
          'Content-Type': 'application/json',
- })
-
-})
+          })})
       .then((data) => data.json())
       .then((data) => setTableData(data))
 
-  }, [])
+      }, [])
   const handleBillClose = () => setbillOpen(false);
   const handleClose = () => setOpen(false);
   return (
@@ -274,11 +366,9 @@ const FAQ = () => {
       >
         <Fade in={open}>
           <Box sx={style}>
-          <List
-      sx={{
-        width: '100%',
-        maxWidth: 360
-      }}
+          <Grid container>
+        <Grid item xs={6} sx={{ paddingRight: '16px' }}>
+          <List sx={{ width: '100%', maxWidth: 360 }}
     >
       <ListItem>
         <ListItemAvatar>
@@ -335,31 +425,39 @@ const FAQ = () => {
       </ListItem>
       <Divider variant="inset" component="li" />
     </List>
+
     <Stack spacing={2} direction="row">
     <FormControl sx={{ width: 350 }}>
-        <InputLabel id="demo-multiple-name-label">Assign Supervisors</InputLabel>
-        <Select
-          labelId="demo-multiple-name-label"
-          id="demo-multiple-name"
-          multiple
-          value={personName}
-          onChange={handleChange}
-          input={<OutlinedInput label="Assign Supervisors" />}
-          MenuProps={MenuProps}
+    <InputLabel id="demo-multiple-name-label">Assign Supervisors</InputLabel>
+    <Select
+      labelId="demo-multiple-name-label"
+      id="demo-multiple-name"
+      value={personName}
+      onChange={handleChange}
+      input={<OutlinedInput label="Assign Supervisors" />}
+      MenuProps={MenuProps}
+    >
+      {extractedNames.map((item) => (
+        <MenuItem
+          key={item.name}
+          value={item.name}
+          style={getStyles(item.name, personName, theme)}
+          onClick={() => setSelectedSupervisorId(item.supervisor_id)}
         >
-          {extractedNames.map((name) => (
-            <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, personName, theme)}
-            >
-              {name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <Button sx={{height:50}} variant="contained" color="primary">Assign</Button>
+          {item.name}
+        </MenuItem>    
+      ))}
+    </Select>
+  </FormControl>
+      <Button sx={{height:50, backgroundColor: 'black',marginTop:10}} variant="contained" color="primary">Assign</Button>
       </Stack>
+      </Grid>
+      <Divider sx={{ margin: '16px 0', backgroundColor: 'black'  }} />
+      <Grid item xs={6} sx={{ paddingLeft: '16px' }}>
+      <ChildModal selectedSupervisorId={selectedSupervisorId} accountNo={rows.account_no} />
+          </Grid>
+      </Grid>
+      
           </Box>
         </Fade>
       </Modal>
