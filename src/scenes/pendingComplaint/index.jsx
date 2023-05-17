@@ -305,7 +305,8 @@ const FAQ = () => {
       setTableData(newData);
     }   
   }
-  const handleAssignClick = async (complainNo, supervisorId) => {
+  const handleAssignClick = async (complainNo, supervisorId,consumer_id) => {
+    console.log('Consumer: ',consumer_id)
     try {
       const url = `http://localhost:3080/supervisor/assigning_supervisor_complain_status/${supervisorId}/${complainNo}`;
 
@@ -318,7 +319,6 @@ const FAQ = () => {
         },
         body: JSON.stringify(data),
       });
-
       if (response.ok) {
         window.alert('Supervisor Assigned!');
         window.location.reload(); // Refresh the page
@@ -329,6 +329,15 @@ const FAQ = () => {
     } catch (error) {
       console.error(error);
     }
+    console.log(consumer_id)
+    axios.post(`https://app.nativenotify.com/api/indie/notification`, 
+    {      
+        subID: `${consumer_id}`,      
+        appId: 7970,      
+        appToken: 'mHLXubAX3j2dGUFOb7IG7h',      
+        title: 'Complain In-Progress',      
+        message: `Supervisor has been assigned to your Complain Number: ${complainNo}` 
+      });
   };
   useEffect(() => {
     fetch("http://localhost:3080/employee_complain/getpendingcomplains",{   method: "GET", 
@@ -477,7 +486,7 @@ const FAQ = () => {
       sx={{ height: 50, backgroundColor: 'black', marginTop: 10 }}
       variant="contained"
       color="primary"
-      onClick={() => handleAssignClick(rows.complain_no, selectedSupervisorId)}
+      onClick={() => handleAssignClick(rows.complain_no, selectedSupervisorId,rows.consumer_id)}
     >
       Assign
     </Button>
