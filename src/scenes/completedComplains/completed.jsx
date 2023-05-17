@@ -12,6 +12,8 @@ import Header from "../../components/Header";
 import {GridActionsCellItem} from '@mui/x-data-grid-pro';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import List from '@mui/material/List';
+import HomeIcon from '@mui/icons-material/Home';
+import WorkIcon from '@mui/icons-material/Work';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -42,11 +44,11 @@ const Completed = () => {
   const [open, setOpen] = useState(false);
 
   const columns = [
-    { field: 'complain_no', headerName: 'Complain #', width: 80},
-    {field: 'supervisor_id', headerName: 'Supervisor ID',width: 100},
-    { field: 'complain_type', headerName: 'Type', width: 150 },
-    {field: 'first_name', headerName: 'Supervisor Assigned',width:150},
-    { field: 'affected_area', headerName: 'Area Affected', width: 150 },
+    { field: 'complain_no', headerName: 'Complain #', width: 65},
+    { field: 'complain_type', headerName: 'Type', width: 100 },
+    { field: 'complain_status', headerName: 'Status', width: 100 },
+    { field: 'affected_area', headerName: 'Area Affected', width: 100 },
+    { field: 'consumer_id', headerName: 'Consumer ID', width: 100 },
     { field: 'account_no', headerName: 'Account Number', width: 100 },
     { field: 'details', headerName: 'Complain Details', width: 300 },
     {
@@ -74,7 +76,7 @@ const Completed = () => {
   }
  
   useEffect(() => {
-    fetch("http://localhost:3080/user_complain/get_supervisor_complain",{   method: "GET", 
+    fetch("http://localhost:3080/employee_complain/getresolvedcomplains",{   method: "GET", 
     'credentials': 'include',
      headers: new Headers({
          'Accept': 'application/json',
@@ -156,6 +158,23 @@ const Completed = () => {
         </ListItemAvatar>
         <ListItemText primary="Type" secondary={rows2.complain_type} />
       </ListItem>
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <HomeIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Area Affected" secondary={rows2.affected_area} />
+      </ListItem>
+      <Divider variant="inset" component="li" />
+      <ListItem>
+        <ListItemAvatar>
+          <Avatar>
+            <WorkIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Consumer ID" secondary={rows2.consumer_id} />
+      </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
         <ListItemAvatar>
@@ -175,20 +194,7 @@ const Completed = () => {
         <ListItemText primary="Complain Details" secondary={rows2.details} />
       </ListItem>
       <Divider variant="middle" component="li" />
-      <Typography align="center" style={{ paddingTop: '10px' }} variant="h5" gutterBottom>
-        Attachment
-      </Typography>
     </List>
-    <Card sx={{ maxWidth: 450 }}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height="241"
-          image="http://2.bp.blogspot.com/-ltqifwhtvgw/VQV4ZCtGYwI/AAAAAAAABk8/MGhvdarxoTo/s1600/New%2BElectric%2BMeters.jpg"
-          alt="meter reading"
-        />
-      </CardActionArea>
-    </Card>
           </Box>
         </Fade>
       </Modal>

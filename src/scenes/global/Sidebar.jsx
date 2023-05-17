@@ -17,6 +17,8 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./SidebarMenu";
 import './sidebar.css'
+import Tooltip from "@mui/material/Tooltip";
+
 const routes = [
   {
     path: "/dashboard/home",
@@ -26,7 +28,7 @@ const routes = [
   {
     path: "/dashboard/team",
     name: "Supervisor List",
-    icon: <PeopleOutlinedIcon/>,
+    icon: <PeopleOutlinedIcon />,
   },
   {
     path: "/dashboard/bill",
@@ -102,6 +104,7 @@ const Sidebar = ({ children }) => {
       },
     },
   };
+  
   function handleClick(e){
     if(e==='Logout')
     {
@@ -111,13 +114,13 @@ const Sidebar = ({ children }) => {
     }
     console.log(localStorage.getItem('auth'))
   }
+  
   return (
     <>
       <div className="main-container">
         <motion.div
           animate={{
             width: isOpen ? "250px" : "75px",
-
             transition: {
               duration: 0.5,
               type: "spring",
@@ -142,7 +145,7 @@ const Sidebar = ({ children }) => {
             </AnimatePresence>
           </div>
           <section className="routes">
-          <div className="bars">
+            <div className="bars">
               <SubjectIcon onClick={toggle} />
             </div>
             {routes.map((route, index) => {
@@ -165,7 +168,9 @@ const Sidebar = ({ children }) => {
                   activeClassName="active"
                   onClick={() => handleClick(route.name)}
                 >
-                  <div className="icon">{route.icon}</div>
+                  <div className="icon">
+                    <Tooltip title={route.name}>{route.icon}</Tooltip>
+                  </div>
                   <AnimatePresence>
                     {isOpen && (
                       <motion.div

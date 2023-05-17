@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
 import { FaAngleDown } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import Tooltip from "@mui/material/Tooltip";
 
 const menuAnimation = {
   hidden: {
@@ -19,6 +20,7 @@ const menuAnimation = {
     },
   },
 };
+
 const menuItemAnimation = {
   hidden: (i) => ({
     padding: 0,
@@ -47,11 +49,14 @@ const SidebarMenu = ({ route, showAnimation, isOpen, setIsOpen }) => {
       setIsMenuOpen(false);
     }
   }, [isOpen]);
+
   return (
     <>
       <div className="menu" onClick={toggleMenu}>
         <div className="menu_item">
-          <div className="icon">{route.icon}</div>
+          <Tooltip title={route.name}>
+            <div className="icon">{route.icon}</div>
+          </Tooltip>
           <AnimatePresence>
             {isOpen && (
               <motion.div
@@ -79,7 +84,7 @@ const SidebarMenu = ({ route, showAnimation, isOpen, setIsOpen }) => {
             <FaAngleDown />
           </motion.div>
         )}
-      </div>{" "}
+      </div>
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -92,13 +97,15 @@ const SidebarMenu = ({ route, showAnimation, isOpen, setIsOpen }) => {
             {route.subRoutes.map((subRoute, i) => (
               <motion.div variants={menuItemAnimation} key={i} custom={i}>
                 <NavLink to={subRoute.path} className="link">
-                  <div className="icon">{subRoute.icon}</div>
+                  <Tooltip title={subRoute.name}>
+                    <div className="icon">{subRoute.icon}</div>
+                  </Tooltip>
                   <motion.div className="link_text">{subRoute.name}</motion.div>
                 </NavLink>
               </motion.div>
             ))}
           </motion.div>
-        )}{" "}
+        )}
       </AnimatePresence>
     </>
   );

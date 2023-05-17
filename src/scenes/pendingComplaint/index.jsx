@@ -29,7 +29,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
@@ -120,7 +120,6 @@ function ChildModal({ selectedSupervisorId, accountNo }) {
     fetchData();
   }, [selectedSupervisorId, accountNo]);
 
-  console.log(parseFloat(trackCordinates.consumer_latitude));
   useEffect(() => {
     if (open) {
       if (!map.current) {
@@ -306,6 +305,31 @@ const FAQ = () => {
       setTableData(newData);
     }   
   }
+  const handleAssignClick = async (complainNo, supervisorId) => {
+    try {
+      const url = `http://localhost:3080/supervisor/assigning_supervisor_complain_status/${supervisorId}/${complainNo}`;
+
+      const data = {}; // Initialize the data variable with the appropriate initial value
+
+      const response = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        window.alert('Supervisor Assigned!');
+        window.location.reload(); // Refresh the page
+      }
+
+      const responseData = await response.json();
+      //console.log(responseData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
     fetch("http://localhost:3080/employee_complain/getpendingcomplains",{   method: "GET", 
     'credentials': 'include',
@@ -449,7 +473,14 @@ const FAQ = () => {
       ))}
     </Select>
   </FormControl>
-      <Button sx={{height:50, backgroundColor: 'black',marginTop:10}} variant="contained" color="primary">Assign</Button>
+  <Button
+      sx={{ height: 50, backgroundColor: 'black', marginTop: 10 }}
+      variant="contained"
+      color="primary"
+      onClick={() => handleAssignClick(rows.complain_no, selectedSupervisorId)}
+    >
+      Assign
+    </Button>
       </Stack>
       </Grid>
       <Divider sx={{ margin: '16px 0', backgroundColor: 'black'  }} />
@@ -462,80 +493,90 @@ const FAQ = () => {
         </Fade>
       </Modal>
       <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={billOpen}
-        onClose={handleBillClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
+  aria-labelledby="transition-modal-title"
+  aria-describedby="transition-modal-description"
+  open={billOpen}
+  onClose={handleBillClose}
+  closeAfterTransition
+  BackdropComponent={Backdrop}
+  BackdropProps={{
+    timeout: 500,
+  }}
+  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} // Update modal styles
+>
+  <Fade in={billOpen}>
+    <Box sx={{ position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '26%',
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  fontsize: 40,
+  p: 2,}}>
+      <List sx={{ width: '100%', maxWidth: 360 }}>
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar>
+              <NumbersIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary="Complaint Number" secondary={rows.complain_no} />
+        </ListItem>
+        <Divider variant="inset" component="li" />
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar>
+              <ElectricBoltIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary="Type" secondary={rows.complain_type} />
+        </ListItem>
+        <Divider variant="inset" component="li" />
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar>
+              <PermIdentityIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary="Account Number" secondary={rows.account_no} />
+        </ListItem>
+        <Divider variant="inset" component="li" />
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar>
+              <DescriptionIcon />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary="Complain Details" secondary={rows.details} />
+        </ListItem>
+        <Divider variant="middle" component="li" />
+        <Typography align="center" style={{ paddingTop: '10px' }} variant="h5" gutterBottom>
+          Attachment
+        </Typography>
+      </List>
+      <Card sx={{ maxWidth: 360, mt: 2 }}> {/* Updated maxWidth */}
+        <CardActionArea>
+          <CardMedia
+            component="img"
+            height="241"
+            image="http://2.bp.blogspot.com/-ltqifwhtvgw/VQV4ZCtGYwI/AAAAAAAABk8/MGhvdarxoTo/s1600/New%2BElectric%2BMeters.jpg"
+            alt="meter reading"
+          />
+        </CardActionArea>
+      </Card>
+      {console.log(rows.complain_no)}
+      <Link
+      to={`/dashboard/complaint/completed/resolve?accountNo=${rows.account_no}&complainNo=${rows.complain_no}&complainType=${rows.complain_type}&details=${rows.details}`}
       >
-        <Fade in={billOpen}>
-          <Box sx={style}>
-          <List
-      sx={{
-        width: '100%',
-        maxWidth: 360
-      }}
-    >
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <NumbersIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Complaint Number" secondary={rows.complain_no}/>
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <ElectricBoltIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Type" secondary={rows.complain_type}/>
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <PermIdentityIcon/>
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Account Number" secondary={rows.account_no}/>
-      </ListItem>
-      <Divider variant="inset" component="li" />
-      <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <DescriptionIcon/>
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary="Complain Details" secondary={rows.details} />
-      </ListItem>
-      <Divider variant="middle" component="li" />
-      <Typography align="center" style={{ paddingTop: '10px' }} variant="h5" gutterBottom>
-        Attachment
-      </Typography>
-    </List>
-    <Card sx={{ maxWidth: 450 }}>
-      <CardActionArea>
-        <CardMedia
-          component="img"
-          height="241"
-          image="http://2.bp.blogspot.com/-ltqifwhtvgw/VQV4ZCtGYwI/AAAAAAAABk8/MGhvdarxoTo/s1600/New%2BElectric%2BMeters.jpg"
-          alt="meter reading"
-        />
-      </CardActionArea>
-    </Card>
-    <Link to="/dashboard/complaint/completed/resolve">
-    <Button sx={{mt:2}}variant="contained" color="success">Resolve</Button> 
-    </Link>  
-          </Box>
-        </Fade>
-      </Modal>
+      <Button sx={{ mt: 2, width: '100%', maxWidth: 360 }} variant="contained" color="success">
+        Resolve
+      </Button>
+        </Link>
+    </Box>
+  </Fade>
+</Modal>
       </Box>
     </Box>
   );
