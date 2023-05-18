@@ -220,6 +220,7 @@ const Resolve = () => {
           InputLabelProps={{
             shrink: true,
           }}
+          required
         />
       <TextField
           id="outlined-number"

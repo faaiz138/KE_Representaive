@@ -9,9 +9,6 @@ const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [tableData, setTableData] = useState([])
-  const handleDeleteClick = (id) => () => {
-    setTableData(tableData.filter((row) => row.id !== id));
-  };
   const columns = [
     { field: 'supervisor_id', headerName: 'ID' },
     { field: 'email', headerName: 'Email', width: 160 },
@@ -53,8 +50,42 @@ const Team = () => {
       .then((data) => setTableData(data))
 
   }, [])
-
-  console.log(tableData);
+  const handleDeleteClick = (id) => () => {
+    setTableData(tableData.filter((row) => row.id !== id));
+    console.log(id.supervisor_id)
+    delete_acc(id.supervisor_id,id)
+  };
+  async function delete_acc(supervisor_id,id)
+  {
+    fetch(`http://localhost:3080/Supervisor/delete_supervisor/${supervisor_id}`, {
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Failed to delete supervisor');
+      }
+      if(response.status===200)
+      {
+      const newData = [...tableData];
+      const prevIndex = tableData.findIndex((item) => item.key === id);
+      newData.splice(prevIndex, 1);
+      setTableData(newData);
+    }
+    if (response.ok) {
+      window.alert('Supervisor Deleted');
+      window.location.reload(); // Refresh the page
+    }
+      // If the deletion is successful, update the tableData state by filtering out the deleted row
+    })
+    .catch((error) => {
+      // Handle error if necessary
+      console.log('Error deleting supervisor:', error);
+    });
+  }
 
   return (
     <Box m="20px">

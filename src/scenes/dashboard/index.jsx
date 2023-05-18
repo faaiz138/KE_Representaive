@@ -50,7 +50,6 @@ const Dashboard = () => {
   var totalComplaints = (parseFloat(dashboardData.new_complains)+parseFloat(dashboardData.resolved_complains)+parseFloat(dashboardData.completed_complains))
   var assignedComplaints = parseFloat(dashboardData.resolved_complains)/(parseFloat(dashboardData.new_complains)+parseFloat(dashboardData.resolved_complains)+parseFloat(dashboardData.completed_complains)).toString()
   var completedComplaints =  parseFloat(dashboardData.completed_complains)/(parseFloat(dashboardData.new_complains)+parseFloat(dashboardData.resolved_complains)+parseFloat(dashboardData.completed_complains)).toString()
-  console.log(dashboardComplain)
   return (
     <Box m="20px">
       {/* HEADER */}

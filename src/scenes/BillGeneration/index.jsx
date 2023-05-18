@@ -16,7 +16,8 @@ const BillGeneration = () => {
   const [dueData,setDueDate] = useState(null);
   const [currentMonthReading,setCurrentMonthReading] = useState(null);
   const [billMonthYear,setbillmonthYear] = useState(null);
-  const [invoiceNumber,setinvoiceNumber] = useState(null)
+  const [invoiceNumber,setinvoiceNumber] = useState(null);
+  const [validationError, setValidationError] = useState(null);
   const handleAmountChange = (event) => {
     const newAmount = parseInt(event.target.value);
     setbillAmount(newAmount);
@@ -38,17 +39,21 @@ const BillGeneration = () => {
     setinvoiceNumber(newInvoice);
   };
   const handleUpdateClick = () => {
-    
-    console.log(billamount)
-    console.log(dueData)
-    console.log(invoiceNumber)
-    console.log(currentMonthReading)
-    console.log(billMonthYear)
-    console.log(value.value)
+    if (!billamount || !dueData || !invoiceNumber || !currentMonthReading || !billMonthYear || !value) {
+      setValidationError("All fields are required");
+        window.alert('All fields are required"');
+        window.location.reload(); // Refresh the page
+    } else if (billamount < 0 || currentMonthReading < 0) {
+      setValidationError("Amount and current month reading cannot be negative");
+      window.alert('Amount and current month reading cannot be negative');
+        window.location.reload(); // Refresh the page
+    } else {
+      setValidationError(null);
+    }
     generatebill(billamount,dueData,invoiceNumber,currentMonthReading,billMonthYear,value.value);
   };
   const generatebill= (billamount,dueData,invoiceNumber,currentMonthReading,billMonthYear,account_no) => {
-    console.log(account_no)
+    console.log(invoiceNumber)
     fetch(`http://localhost:3080/account/generation_new_bill/${account_no}`, {
       method: 'PUT',
       headers: {
@@ -96,7 +101,14 @@ const BillGeneration = () => {
     setValue(newValue);
     setDisplayItems(true);
   };
-
+  function generateInvoiceNumber() {
+    const timestamp = Date.now().toString();
+    const random = Math.floor(Math.random() * 1000000).toString();
+    let invoiceNumber = timestamp + random;
+    invoiceNumber = invoiceNumber.slice(5, 10)
+    invoiceNumber = parseInt(invoiceNumber)
+    return invoiceNumber;
+  }
   return (
     <div>
       <Header title="Bill Genration" subtitle="Generating Bill of Customer" />
@@ -168,9 +180,7 @@ const BillGeneration = () => {
           }}
         />
   </Stack>
-
   <Divider orientation="vertical" flexItem sx={{ backgroundColor: "#000000" }} />
-
   <Stack direction="column" justifyContent="space-evenly">
     <TextField
       id="outlined-number"
@@ -219,5 +229,4 @@ const BillGeneration = () => {
       </div>
     );
   };
-
 export default BillGeneration;
